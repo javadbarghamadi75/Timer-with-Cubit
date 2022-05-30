@@ -18,22 +18,22 @@ class TimerCubit extends Cubit<TimerState> {
       : _ticker = ticker,
         super(const TimerInitialState(_initialStateDuration));
 
-  void onStart() {
+  void onStarted() {
     emit(TimerRunInProgressState(state.duration));
     _tickerSubscription?.cancel();
     _tickerSubscription = _ticker
         .tick(ticks: state.duration)
-        .listen((eventDuration) => onTick(duration: eventDuration));
+        .listen((eventDuration) => onTicked(duration: eventDuration));
   }
 
-  void onPause() {
+  void onPaused() {
     if (state is TimerRunInProgressState) {
       emit(TimerRunPauseState(state.duration));
       _tickerSubscription?.pause();
     }
   }
 
-  void onResume() {
+  void onResumed() {
     if (state is TimerRunPauseState) {
       emit(TimerRunInProgressState(state.duration));
       _tickerSubscription?.resume();
@@ -45,16 +45,16 @@ class TimerCubit extends Cubit<TimerState> {
     _tickerSubscription?.cancel();
   }
 
-  void onTick({required int duration}) {
+  void onTicked({required int duration}) {
     /// works `right` by using duration > 0
     duration > 0
         ? emit(TimerRunInProgressState(duration))
         : emit(const TimerRunCompleteState(_completeStateDuration));
 
-    /// works `wrong` by using state.duration > 0
-    state.duration > 0
-        ? emit(TimerRunInProgressState(duration))
-        : emit(const TimerRunCompleteState(_completeStateDuration));
+    // /// works `wrong` by using state.duration > 0
+    // state.duration > 0
+    //     ? emit(TimerRunInProgressState(duration))
+    //     : emit(const TimerRunCompleteState(_completeStateDuration));
 
     log('onTick method | duration : $duration');
     log('onTick method | state.duration : ${state.duration}');

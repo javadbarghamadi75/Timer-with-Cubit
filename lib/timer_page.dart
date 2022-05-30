@@ -67,13 +67,13 @@ class Actions extends StatelessWidget {
             if (state is TimerInitialState) ...[
               FloatingActionButton(
                 child: const Icon(Icons.play_arrow),
-                onPressed: () => context.read<TimerCubit>().onStart(),
+                onPressed: () => context.read<TimerCubit>().onStarted(),
               ),
             ],
             if (state is TimerRunInProgressState) ...[
               FloatingActionButton(
                 child: const Icon(Icons.pause),
-                onPressed: () => context.read<TimerCubit>().onPause(),
+                onPressed: () => context.read<TimerCubit>().onPaused(),
               ),
               FloatingActionButton(
                 child: const Icon(Icons.replay),
@@ -83,7 +83,7 @@ class Actions extends StatelessWidget {
             if (state is TimerRunPauseState) ...[
               FloatingActionButton(
                 child: const Icon(Icons.play_arrow),
-                onPressed: () => context.read<TimerCubit>().onResume(),
+                onPressed: () => context.read<TimerCubit>().onResumed(),
               ),
               FloatingActionButton(
                 child: const Icon(Icons.replay),
